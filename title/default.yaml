@@ -1,0 +1,32 @@
+name: 示例 API
+tree:
+- title: "概述"
+  items:
+    - title: "快速开始"
+      file: "overview/quickstart.md"
+- title: "用户模块"
+  items:
+    - title: "用户管理"
+      items:
+        - title: "获取用户列表"
+          file: "users.md#获取用户列表"
+        - title: "创建用户"
+          file: "users.md#创建用户"
+    - title: "信息维护"
+      # items:
+      #   - title: "获取用户详情"
+      #     file: "users.md#获取用户详情"
+      #   - title: "更新用户"
+      #     file: "users.md#更新用户"
+    - title: "删除用户"
+      file: "users.md#删除用户"
+- title: "文章模块"
+  items:
+    - title: "获取文章列表"
+      file: "posts.md#获取文章列表"
+    - title: "获取文章详情"
+      file: "posts.md#获取文章详情"
+    - title: "创建文章"
+      file: "posts.md#创建文章"
+    - title: "删除文章"
+      file: "posts.md#删除文章"

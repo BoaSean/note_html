@@ -1,0 +1,28 @@
+name: STM32 HAL
+tree:
+- title: "SDMMC"
+  items:
+    - title: "SDMMC概述"
+      file: "stm_hal.md#SDMMC概述"
+    - title: "SD_TypeDef"
+      file: "stm_hal.md#SD_TypeDef"
+    - title: "SDMMC_InitTypeDef"
+      file: "stm_hal.md#SDMMC_InitTypeDef"
+    - title: "HAL_SD_CardInfoTypeDef"
+      file: "stm_hal.md#HAL_SD_CardInfoTypeDef"
+    - title: "SD_HandleTypeDef"
+      file: "stm_hal.md#SD_HandleTypeDef"
+    - title: "HAL_SD_ReadBlocks"
+      file: "stm_hal.md#HAL_SD_ReadBlocks"
+    - title: "HAL_SD_WriteBlocks"
+      file: "stm_hal.md#HAL_SD_WriteBlocks"
+    - title: "HAL_SD_Erase"
+      file: "stm_hal.md#HAL_SD_Erase"
+    - title: "HAL_SD_ReadBlocks_DMA"
+      file: "stm_hal.md#HAL_SD_ReadBlocks_DMA"
+    - title: "HAL_SD_WriteBlocks_DMA"
+      file: "stm_hal.md#HAL_SD_WriteBlocks_DMA"
+- title: "ETH"
+  items:
+    - title: "ETH概述"
+      file: "stm_hal.md#ETH概述"

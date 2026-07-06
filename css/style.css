@@ -1,0 +1,393 @@
+/* ============================================
+   配色变量 & 基础重置
+   ============================================ */
+:root {
+  --sidebar-width: 280px;
+  --sidebar-bg: #21252b;
+  --sidebar-text: #abb2bf;
+  --sidebar-hover: #2c313a;
+  --sidebar-active: #2c313c;
+  --accent: #61afef;
+  --accent-dim: #98c379;
+  --bg: #282c34;
+  --card-bg: #282c34;
+  --text: #abb2bf;
+  --text-secondary: #5c6370;
+  --border: #181a1f;
+  --code-bg: #1e2227;
+  --code-color: #e06c75;
+  --radius: 8px;
+  --transition: 0.2s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* ============================================
+   滚动条
+   ============================================ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a3f4b;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4f5b;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3a3f4b transparent;
+}
+
+/* ============================================
+   侧边栏
+   ============================================ */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition);
+}
+
+.sidebar-header {
+  padding: 20px 20px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.sidebar-header h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #abb2bf;
+}
+
+.sidebar-nav {
+  padding: 8px 0;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ---- 导航树节点 ---- */
+.nav-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent);
+  user-select: none;
+  transition: background var(--transition);
+}
+
+.nav-section-header:hover {
+  background: var(--sidebar-hover);
+}
+
+.nav-section-header .arrow {
+  font-size: 0.65rem;
+  transition: transform var(--transition);
+  opacity: 0.5;
+}
+
+.nav-section.collapsed .nav-section-header .arrow {
+  transform: rotate(-90deg);
+}
+
+.nav-section-items {
+  overflow: hidden;
+  transition: max-height var(--transition), opacity var(--transition);
+  max-height: 5000px;
+  opacity: 1;
+}
+
+.nav-section.collapsed .nav-section-items {
+  max-height: 0;
+  opacity: 0;
+}
+
+.nav-item {
+  display: block;
+  padding: 6px 20px 6px 36px;
+  font-size: 0.84rem;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+  background: var(--sidebar-hover);
+  color: #abb2bf;
+}
+
+.nav-item.active {
+  background: var(--sidebar-active);
+  color: #abb2bf;
+  border-left-color: var(--accent);
+}
+
+/* ---- 二级子目录 ---- */
+.nav-sub {
+  margin: 0;
+}
+
+/* 有子项的条目，统一继承 .nav-item 的 padding/颜色/边框，不再有单独的 class */
+.nav-item.group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.nav-item.group .arrow {
+  font-size: 0.6rem;
+  transition: transform var(--transition);
+  opacity: 0.5;
+  margin-left: 8px;
+}
+
+.nav-sub.collapsed .nav-item.group .arrow {
+  transform: rotate(-90deg);
+}
+
+.nav-sub-body {
+  overflow: hidden;
+  transition: max-height var(--transition), opacity var(--transition);
+  max-height: 5000px;
+  opacity: 1;
+}
+
+.nav-sub.collapsed .nav-sub-body {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* 子目录下的导航项多一层缩进 */
+.nav-sub-body .nav-item {
+  padding-left: 52px;
+}
+
+/* ============================================
+   主内容区
+   ============================================ */
+.content {
+  margin-left: var(--sidebar-width);
+  padding: 40px 48px;
+  flex: 1 0 0;
+  min-width: 0;
+  max-width: 1400px;
+}
+
+.content-placeholder {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-secondary);
+}
+
+.content-placeholder h2 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+/* ---- Markdown 渲染样式 ---- */
+.markdown-body h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid var(--border);
+}
+
+.markdown-body h2 {
+  font-size: 1.4rem;
+  margin: 1.6em 0 0.6em;
+  color: #abb2bf;
+}
+
+.markdown-body h3 {
+  font-size: 1.15rem;
+  margin: 1.2em 0 0.4em;
+}
+
+.markdown-body h4 {
+  font-size: 1rem;
+  margin: 1em 0 0.3em;
+}
+
+.markdown-body p {
+  margin: 0.6em 0;
+}
+
+.markdown-body ul, .markdown-body ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+.markdown-body li {
+  margin: 0.2em 0;
+}
+
+.markdown-body code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+  font-size: 0.88em;
+  color: var(--code-color);
+}
+
+.markdown-body pre {
+  background: #21252b;
+  color: #abb2bf;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 1em 0;
+  line-height: 1.5;
+  font-size: 0.88rem;
+  border: 1px solid var(--border);
+}
+
+.markdown-body pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+}
+
+.markdown-body table {
+  width: auto;
+  max-width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.92rem;
+}
+
+.markdown-body th, .markdown-body td {
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  text-align: left;
+}
+
+.markdown-body th {
+  background: var(--code-bg);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.markdown-body blockquote {
+  border-left: 4px solid var(--accent);
+  padding: 4px 16px;
+  margin: 1em 0;
+  color: var(--text-secondary);
+  background: rgba(122, 162, 247, 0.06);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+.markdown-body a {
+  color: var(--accent-dim);
+}
+
+.markdown-body img {
+  max-width: 100%;
+  border-radius: var(--radius);
+}
+
+/* ============================================
+   移动端适配
+   ============================================ */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  background: var(--sidebar-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #abb2bf;
+  margin: 4px 0;
+  border-radius: 1px;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .content {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px 16px;
+    padding-top: 56px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .overlay.show {
+    display: block;
+  }
+}

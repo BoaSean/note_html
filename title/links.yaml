@@ -1,0 +1,9 @@
+# 各 API 手册对应的官网链接
+freertos_API: https://www.freertos.org/zh-cn-cmn-s/Documentation/02-Kernel/04-API-references/01-Task-creation/00-TaskHandle
+# lvgl: https://docs.lvgl.io/
+# stm_hal: https://www.st.com/
+# c_ANSI: https://en.cppreference.com/w/c
+# cpp_ISO: https://en.cppreference.com/w/cpp
+# linux_driver: https://www.kernel.org/doc/html/latest/
+# c_Linux: https://man7.org/linux/man-pages/
+RTThread_API: https://www.rt-thread.org/document/api/index.html
