@@ -120,6 +120,8 @@ tree:
   items:
   - title: "windows"
     items:
+    - title: "wsl2"
+      file: "tool.md#wsl2"
     - title: "windows_cmd"
       file: "tool.md#windows_cmd"
     - title: "windows_install"

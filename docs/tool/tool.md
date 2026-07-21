@@ -4,6 +4,86 @@
 
 ### windows_cmd
 
+
+### wsl2
+
+Hyper-V
+
+    bcdedit /set hypervisorlaunchtype auto          管理员身份
+    bcdedit /set hypervisorlaunchtype off           
+
+    bcdedit /enum | findstr hypervisorlaunchtype    管理员身份
+
+
+
+powershell
+
+    $PSVersionTable
+    winget install Microsoft.PowerShell
+    pwsh --version
+
+
+wsl
+
+    wsl --install --no-distribution                 管理员身份
+
+    重启
+
+    wsl.exe --list --online             #查看在线列表
+
+    wsl --install -d Ubuntu-22.04 --location D:\app\WSL\Ubuntu_2204
+
+    wsl -l -v                           #查看
+
+    wsl --shutdown                      #wsl关机
+
+        sudo apt update
+        sudo apt upgrade
+
+        配置wsl性能参数
+            free -h         10/16       swap4
+            nproc           27/32
+            网络            映射模式
+
+        文件
+            \\wsl$      win文件访问wsl
+        
+            在Ubuntu终端里，Windows的所有硬盘分区都自动挂载在 /mnt/ 目录下。
+            路径对照：Windows的C盘对应 /mnt/c/，D盘对应 /mnt/d/，以此类推。
+        显卡    
+            nvidia-smi
+
+NVIDIA Container Toolkit
+
+https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+
+        sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    gnupg2
+
+
+        curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+    && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+        sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+        sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+
+    sudo apt-get update
+
+
+    sudo apt-get install -y nvidia-container-toolkit    
+
+    nvidia-ctk --version
+
+    docker配置nvidia
+        sudo nvidia-ctk runtime configure --runtime=docker                                          修改 Docker 的配置文件，让 Docker 知道以后如何调用 NVIDIA Container Runtime                           
+
+        sudo systemctl restart docker                                                               重启容器服务
+
+        sudo docker run --rm --gpus all nvcr.io/nvidia/k8s/cuda-sample:nbody nbody -gpu -benchmark   性能测试
+
+
 ### windows_install
 
     D:\Program\mingw64
@@ -356,7 +436,9 @@
 
         
 
-    软件清华源
+    软件源
+    
+        https://developer.aliyun.com/mirror/ubuntu/
 
         https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
 
@@ -498,7 +580,8 @@
 
 ### vscode_cmd
 
-    Ctrl+/              单行或多行注释或取消注释  
+    Ctrl+/              单行注释或取消注释  
+    shift +alt +a       多行注释
 
     Ctrl+F              查找与替换 
     
@@ -654,14 +737,84 @@
     git reflog                                          # 查看log
     git checkout 60e413c -- 文件名                       # 从旧提交中检出某文件
 
+    git config --global http.proxy http://127.0.0.1:7897
+    git config --global https.proxy http://127.0.0.1:7897
+    git config --global --unset http.proxy 
+    git config --global --unset https.proxy
+
+
+    #################################远程仓库#################################
+
+    #配置仓库ssh
+    ssh-keygen -t rsa -C "544115819@qq.com"                 #rsa加密生成sshkey  在gitbesh中操作
+    ssh-keygen -t ed25519 -C "544115819@qq.com"             #ed25519加密生成sshkey
+
+    $ clip < ~/.ssh/id_rsa.pub                              #cmd  复制sshkey  
+    Get-Content ~\.ssh\id_ed25519.pub | Set-Clipboard       #powershell 复制sshkey
+
+    cat ~\.ssh\id_ed25519.pub                               #手动查看
+
+    ssh -T git@github.com                                   #测试github ssh添加完成  第一次链接要输入yes
+
+    git remote rm origin                                        #删除链接
+    git remote add origin git@github.com:xxx/xxx.git            #链接本地仓库与远程仓库
+    git remote -v
+
+    git push origin master                                   #git push 提交版本库到远程仓库
+
+    git clone gitagithub.com:xxx/xxx.git                 #git clone 下载远程仓库到本地 
+
+    git clone -b v1.5.2 https://github.com/RT-Thread/env-windows.git
+    git clone -b mooncake_v8 --no-checkout git@github.com:Forairaaaaa/lv_port_pc_eclipse.git  不自动检出文件
+
+    #################################历史重写器#################################
+
+    git rebase -i --root                            启动“历史重写器”
+
+
+    edit bed1545 add_v4.1.0                         设置历史重写器 把三个 commit 的pick全部改成edit
+    edit cf4084d add_readme
+    edit 81c117f add_v5.1.0
+
+                                                    自动把代码恢复到你刚提交 add_v4.1.0 那一刻的状态
+    git add -f tools/cscope.py
+    git commit --amend --no-edit                    git commit --amend(不产生新提交) --no-edit(不改动原来的提交信息即保留 add_v4.1.0 这个标题)
+    git rebase --continue                           告知历史重写器 修改完了
+
+                                                    自动把代码恢复到你刚提交 add_readme 那一刻的状态
+    git add -f tools/cscope.py
+    git commit --amend --no-edit
+    git rebase --continue
+                                                    自动把代码恢复到你刚提交 add_v5.1.0 那一刻的状态
+    git add -f tools/cscope.py
+    git commit --amend --no-edit
+    git rebase --continue   
+                                                    修改完成
+
+                                                    重新打标签
+    git tag -d v4.1.0
+    git tag -d v5.1.0
+    git tag v4.1.0 <新的v4 commit>
+    git tag v5.1.0 <新的v5 commit>
+
+                                                    强制推送远程仓库
+    git push --force origin master
+    git push --force origin v4.1.0
+    git push --force origin v5.1.0
+
+    #################################分支#################################
+
     git branch  fenzhi1 5f26c92                         #创建分支但不切换
-    git checkout fenzhi1  
+    git checkout fenzhi1                                #切换分支
+
     git branch                                          #查看分支   
-    git checkout master                                 #切换到主分支然后合并
-    git merge fenzhi1  
     git log --oneline --graph --all                     #查看分支图
 
+    git checkout master                                 #切换到主分
+    git merge fenzhi1                                   #合并分支到master
 
+    #################################子仓库#################################
+    
     git submodule update --init --recursive
 
     git submodule add https://github.com/armink/EasyFlash.git  EasyFlash
@@ -676,36 +829,26 @@
 
     https://github.com/armink/EasyFlash/compare/4.1.0...master
 
-    git config --global http.proxy http://127.0.0.1:7897
-    git config --global https.proxy http://127.0.0.1:7897
-    git config --global --unset http.proxy 
-    git config --global --unset https.proxy
-
-    #################################远程仓库#################################
-
-    #首次使用配置远程仓库
-    ssh-keygen -t rsa -C "544115819@qq.com"                 #rsa加密生成sshkey  在gitbesh中操作
-    ssh-keygen -t ed25519 -C "544115819@qq.com"             #ed25519加密生成sshkey
-
-    $ clip < ~/.ssh/id_rsa.pub                              #cmd  复制sshkey  
-    Get-Content ~\.ssh\id_ed25519.pub | Set-Clipboard       #powershell 复制sshkey
-
-    cat ~\.ssh\id_ed25519.pub                               #手动查看
-
-    ssh -T git@github.com                                   #测试github ssh添加完成
-
-    git remote rm origin                                        #删除链接
-    git remote add origin git@github.com:BoaSean/liunxtest.git  #链接本地仓库与远程仓库
-
-    git push origin master                                   #git push 提交版本库到远程仓库
-
-    git clone gitagithub.com:BoaSean/ds.git                 #git clone 下载远程仓库到本地 
-
-    git clone -b v1.5.2 https://github.com/RT-Thread/env-windows.git
-    git clone -b mooncake_v8 --no-checkout git@github.com:Forairaaaaa/lv_port_pc_eclipse.git  不自动检出文件
-
-
 ### github_sshkey
+
+gitHub Pages
+
+    用户站（User Site）：仅限 1 个
+        规则：整个 GitHub 账号下，有且仅有 1 个用户站。
+        仓库名：必须是唯一的 你的用户名.github.io。
+        访问地址：https://你的用户名.github.io（这是你的“根域名”主页）。
+
+    项目站（Project Site）：无限个（受仓库总数限制）
+        规则：除了那个特定的用户名仓库外，你名下的每一个其他仓库，都可以独立开启一个 GitHub Pages 网站。
+        仓库名：任意命名（比如 my-blog、react-demo、resume 等）。
+        访问地址：https://你的用户名.github.io/仓库名
+
+        进入你的仓库主页，点击上方的 Settings（设置）标签。
+        在左侧菜单中，点击 Pages（通常在 Code and automation 分类下）。
+        在“Branch”选项下：
+            把分支从 None 改为 main。
+            文件夹保持默认的 / (root)。
+            点击 Save 按钮
 
 github 添加 git ssh 
 
@@ -1318,7 +1461,7 @@ vscode调试
 
 ### rtt_asset
 
-    env 1.5.x
+    windows env 1.5.2  /linux  env 1.5.x
     sdk 4.1.0/sdk5.1.0
 
 ### rtt_cmd
@@ -1510,9 +1653,14 @@ vscode调试
             .\install.ps1
         
             D:\\program\\esp-idf\\esp-idf_v5.4.1\\export.ps1        #windows 启动环境
-            ~/esp/esp-idf/export.sh                                 #linux 启动环境
+            source ~/esp/esp-idf/export.sh                          #当前中端中执行
+            bash -c ~/esp/esp-idf/export.sh                         #子终端中执行
 
     5.5.4
+            C:\\Espressif\\tools\\Microsoft.v5.5.4.PowerShell_profile.ps1   
+            source /home/sean/.espressif/tools/activate_idf_v5.5.4.sh
+            bash -c /home/sean/.espressif/tools/activate_idf_v5.5.4.sh
+
         eim-cli-windows-x64.exe
 
     idf.py create-project test
