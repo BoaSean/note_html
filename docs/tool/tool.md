@@ -231,9 +231,11 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
 
     unrar/rar
         sudo apt install unrar
+        unrar -verson
         unrar x yourfile.rar                                        #解压
 
         sudo apt install rar
+        rar -version
         rar a -r esp_esp32s3_szp.rar esp_esp32s3_szp/               #压缩
 
         unzip stm32cubemx-lin-v6-16-1.zip -d stm32cubemx
@@ -708,40 +710,48 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
     #git config --global core.autocrlf input             
 
     git init                                            #创建新的本地仓库
+
     git add .                                           #添加所有工作区文件到暂存区
     git commit -m [add1]                                #提交暂存区到版本库并添加备注
-    git checkout HEAD^0 .                               #x 表示拉取上x版本的文件  .表示所有文件
-    git reset HEAD^                                     #工作区回退到上个版本
+
+    git tag                                             #查看标签 
+    git tag v1.00 85fc7e7                               #设置标签
+    git tag -d v1.00                                    #删除标签
+
+                                                        #移动HEAD
+    git switch --detach 08db890             git checkout 60e413c        
+    git switch --detach v1.00               git checkout v1.00
+    git switch master                       git checkout master
+
+    git restore --source 08db890 t1.txt     git checkout 08db890 -- t1.txt 
+    git restore --source=HEAD t1.txt(git restore t1.txt)
+                                            git checkout HEAD^0 .
+                                            git checkout v1.00 .
+    
+                                                        #移动HEAD 和 master
+    git reset --hard 5f26c92                            #撤销提交记录 ，改动完全消失回退
+    git reset --soft 5f26c92                            #撤销提交记录 , 改动会保留在暂存区
+    git reset 5f26c92(git reset --mixed 5f26c92)        #撤销提交记录 ，改动留在工作区但不放进暂存区
+
+    git reset --hard 5f26c92 
+    git clean -fdx
 
     git status                                          #查看状态
     git status -s                                       #简洁状态查看
     #第一个M表示此文件的暂存区和版本库不同  第二个M表示此文件的工作区和暂存区不同
 
-    git diff                                            #比较工作区与暂存区文件不同
-    git diff --cached                                   #比较暂存区与版本库的不同
-
     git log                                             #查看提交历史
     git log --oneline                                   #简洁查看
 
-    git tag                                             #查看标签 
-    git tag v1.00 85fc7e7                               #设置标签
-    git tag -d v1.00                                    #删除标签
-    git checkout v1.00 .                                #检出标签
-
-
-    git reset --hard 5f26c92                            #撤销提交记录 ，改动完全消失回退
-    git reset --soft 5f26c92                            #撤销提交记录 , 改动会保留在暂存区
-    git reset --mixed 5f26c92                           #撤销提交记录 ，改动留在工作区但不放进暂存区
-
-
     git reflog                                          # 查看log
-    git checkout 60e413c -- 文件名                       # 从旧提交中检出某文件
+
+    git diff                                            #比较工作区与暂存区文件不同
+    git diff --cached                                   #比较暂存区与版本库的不同
 
     git config --global http.proxy http://127.0.0.1:7897
     git config --global https.proxy http://127.0.0.1:7897
     git config --global --unset http.proxy 
     git config --global --unset https.proxy
-
 
     #################################远程仓库#################################
 
@@ -805,12 +815,12 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
     #################################分支#################################
 
     git branch  fenzhi1 5f26c92                         #创建分支但不切换
-    git checkout fenzhi1                                #切换分支
+    git switch fenzhi1          git checkout fenzhi1    #切换分支
 
     git branch                                          #查看分支   
     git log --oneline --graph --all                     #查看分支图
 
-    git checkout master                                 #切换到主分
+    git switch master          git checkout master     #切换到主分
     git merge fenzhi1                                   #合并分支到master
 
     #################################子仓库#################################
@@ -828,6 +838,103 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
     git log --pretty=format:"%h | %ad | %s" --date=short 4.1.0..master
 
     https://github.com/armink/EasyFlash/compare/4.1.0...master
+
+    git init
+
+    git submodule add  https://github.com/libsdl-org/SDL.git source/SDL 
+    cd .\source\SDL\
+    git checkout release-2.28.5
+    cd ..
+    cd ..
+    git add source/SDL
+
+    git submodule add  https://github.com/freetype/freetype.git source/freetype 
+    git checkout VER-2-13-1
+    git add source/freetype
+
+    git submodule add  https://github.com/lvgl/lvgl.git source/lvgl
+    git checkout v8.3.10 
+    git add source/lvgl
+
+    git submodule add https://github.com/lvgl/lv_drivers.git source/lv_drivers
+    git checkout v8.3.0 
+    git add source/lv_drivers
+
+    git submodule add https://github.com/Samsung/rlottie.git source/rlottie
+    git checkout v0.2 
+    git add source/rlottie
+
+    git submodule add https://github.com/bblanchon/ArduinoJson.git source/ArduinoJson
+    git checkout v6.21.2 
+    git add source/ArduinoJson
+
+    git submodule add https://github.com/ARM-software/CMSIS_5.git source/CMSIS/CMSIS_5.4.0
+    git checkout 5.4.0 
+    git add source/CMSIS/CMSIS_5.4.0
+
+    git submodule add https://github.com/STMicroelectronics/stm32f1xx-hal-driver.git source/stm32f1xx-hal-driver
+    git checkout v1.1.10 
+    git add source/stm32f1xx-hal-driver
+
+    git submodule add https://github.com/STMicroelectronics/cmsis-device-f1.git source/cmsis-device-f1
+    git checkout v4.3.5 
+    git add source/cmsis-device-f1
+
+    git submodule add https://github.com/STMicroelectronics/stm32f4xx-hal-driver.git source/stm32f4xx-hal-driver
+    git checkout v1.8.1
+    git add source/stm32f4xx-hal-driver
+
+    git submodule add https://github.com/STMicroelectronics/cmsis-device-f4.git source/cmsis-device-f4
+    git checkout v2.6.8
+    git add source/cmsis-device-f4
+
+    git submodule add https://github.com/ARM-software/CMSIS_5.git source/CMSIS/CMSIS_5.6.0
+    git checkout 5.6.0
+    git add source/CMSIS/CMSIS_5.6.0
+
+    git submodule add https://github.com/STMicroelectronics/stm32h7xx-hal-driver.git source/stm32h7xx-hal-driver
+    git checkout v1.11.1 
+    git add source/stm32h7xx-hal-driver
+
+    git submodule add https://github.com/STMicroelectronics/cmsis-device-h7.git source/cmsis-device-h7
+    git checkout v1.10.3 
+    git add source/cmsis-device-h7
+
+    git submodule add https://github.com/Open-CMSIS-Pack/STM32H7xx_DFP.git packs/STM32H7xx_DFP
+    git checkout v4.1.3
+    git add packs/STM32H7xx_DFP
+    
+    git submodule add https://github.com/Open-CMSIS-Pack/STM32F4xx_DFP.git packs/STM32F4xx_DFP
+    git checkout v3.1.1
+    git add packs/STM32F4xx_DFP
+
+    git submodule add https://github.com/BoaSean/STM32F1xx_DFP.git packs/STM32F1xx_DFP
+    git checkout v2.4.1
+    git add packs/STM32F1xx_DFP
+
+    git submodule add https://github.com/BoaSean/rtt-kernel.git  source/rtt-kernel-v4.1.0
+    git checkout v4.1.0 
+    git add source/rtt-kernel-v4.1.0
+
+    git submodule add https://github.com/BoaSean/rtt-sdk.git  source/rtt-sdk-v4.1.0
+    git checkout v4.1.0
+    git add source/rtt-sdk-v4.1.0
+
+    git submodule add https://github.com/BoaSean/rtt-kernel.git  source/rtt-kernel
+    git checkout v5.1.0 
+    git add source/rtt-kernel
+
+    git submodule add https://github.com/BoaSean/rtt-sdk.git  source/rtt-sdk
+    git checkout v5.1.0
+    git add source/rtt-sdk
+
+    git submodule add https://github.com/RT-Thread-Studio/sdk-bsp-stm32h750-realthread-artpi.git source/sdk-bsp-stm32h750-realthread-artpi
+    git checkout 1.3.0 
+    git add source/sdk-bsp-stm32h750-realthread-artpi
+
+    git submodule status
+
+    
 
 ### github_sshkey
 
@@ -1752,10 +1859,21 @@ vscode调试
     5.5.4
 
         https://docs.espressif.com/projects/esp-idf/zh_CN/stable/esp32/get-started/linux-setup.html
-
         echo "deb [trusted=yes] https://dl.espressif.com/dl/eim/apt/ stable main" | sudo tee /etc/apt/sources.list.d/espressif.list
-
         sudo apt update
+
+        https://docs.espressif.com/projects/idf-im-ui/en/latest/faq.html
+        # Install the Espressif signing key
+        sudo install -m 0755 -d /etc/apt/keyrings
+        sudo curl -fsSL https://dl.espressif.com/dl/eim/eim.gpg -o /etc/apt/keyrings/eim.gpg
+        sudo chmod 0644 /etc/apt/keyrings/eim.gpg
+
+        # Add the Espressif APT repository (deb822 with signed-by)
+        sudo curl -fsSL https://dl.espressif.com/dl/eim/eim.sources -o /etc/apt/sources.list.d/espressif.sources
+
+        # Update package lists
+        sudo apt update
+
 
         sudo apt install eim-cli
 
