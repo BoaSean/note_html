@@ -581,10 +581,11 @@ struct file_operations {
 ### sync 同步机制概述1
 
     中断屏蔽
+    原子操作 (不会被中断打断的操作，保证数据一致性)
     自旋锁 (未获取锁的进程处于自旋状态是要消耗cpu资源的 针对多核设计)
     信号量 (获取不到信号量时进程进入休眠，不消耗CPU资源)
     互斥体 (获取不到互斥体时进程进入休眠，不消耗CPU资源，比信号量更轻量)
-    原子操作 (不会被中断打断的操作，保证数据一致性)
+    RCU (Read-Copy-Update)：一种极其高效的同步机制
 
 ## 中断屏蔽
 
@@ -595,6 +596,143 @@ struct file_operations {
 ### local_irq_enable
 
     local_irq_enable();开中断宏
+
+
+## 原子操作
+### 数据结构atomic_t
+
+    atomic_t atm;
+    功能：定义一个原子变量。
+
+    注意：
+        使用前必须初始化
+        可以通过atomic_set或ATOMIC_INIT初始化
+        原子操作保证在多处理器系统上的同步
+    示例：
+        // 先定义，再初始化
+        atomic_t atm;
+        atomic_set(&atm, 1);
+
+        // 定义并初始化
+        atomic_t atm = ATOMIC_INIT(1);
+
+### ATOMIC_INIT
+
+    atomic_t atm = ATOMIC_INIT(1);
+    功能：定义并初始化原子变量的宏。
+
+    注意：
+        只能在变量定义时使用
+        不能用于已经定义的变量
+        参数必须是编译时常量
+    参数：
+        i - 原子变量的初始值
+
+### atomic_read
+
+    int atomic_read(const atomic_t *v);
+    功能：原子读取变量的值。
+
+    注意：
+        保证读取操作的原子性
+        不会被其他CPU的并发操作干扰
+    参数：
+        v - 原子变量的指针
+    返回值：
+        返回原子变量的当前值
+    示例：
+        int val = atomic_read(&atm);
+
+### atomic_set
+
+    void atomic_set(atomic_t *v, int i);
+    功能：原子设置变量的值。
+
+    注意：
+        保证设置操作的原子性
+        可以用于初始化或重置原子变量
+    参数：
+        v - 原子变量的指针
+        i - 要设置的值
+    示例：
+        atomic_set(&atm, 100);
+
+### atomic_inc
+
+    void atomic_inc(atomic_t *v);
+    功能：原子递增操作。
+
+    注意：
+        将原子变量的值加1
+        操作是原子的，不会被中断
+        常用于引用计数
+    参数：
+        v - 原子变量的指针
+    示例：
+        atomic_inc(&atm);  // atm = atm + 1
+
+### atomic_dec
+
+    void atomic_dec(atomic_t *v);
+    功能：原子递减操作。
+
+    注意：
+        将原子变量的值减1
+        操作是原子的，不会被中断
+        常用于引用计数
+    参数：
+        v - 原子变量的指针
+    示例：
+        atomic_dec(&atm);  // atm = atm - 1
+
+### atomic_dec_and_test
+
+    int atomic_dec_and_test(atomic_t *v);
+    功能：原子递减并测试是否为零。
+
+    注意：
+        将原子变量的值减1并测试结果
+        整个操作是原子的
+        常用于引用计数的释放检查
+    参数：
+        v - 原子变量的指针
+    返回值：
+        1 - 递减后的值为0
+        0 - 递减后的值不为0
+    示例：
+        if (atomic_dec_and_test(&atm)) {
+            // 引用计数变为0，执行清理操作
+            cleanup_resource();
+        }
+
+### atomic_add
+
+    void atomic_add(int i, atomic_t *v);
+    功能：原子加法操作。
+
+    注意：
+        将原子变量的值加上指定的数
+        操作是原子的，不会被中断
+    参数：
+        i - 要加的值
+        v - 原子变量的指针
+    示例：
+        atomic_add(10, &atm);  // atm = atm + 10
+
+### atomic_sub
+
+    void atomic_sub(int i, atomic_t *v);
+    功能：原子减法操作。
+
+    注意：
+        将原子变量的值减去指定的数
+        操作是原子的，不会被中断
+    参数：
+        i - 要减的值
+        v - 原子变量的指针
+    示例：
+        atomic_sub(10, &atm);  // atm = atm - 10
+
 
 ## 自旋锁 
 
@@ -820,141 +958,6 @@ struct file_operations {
     示例：
         // 释放互斥体
         mutex_unlock(&my_mutex);
-
-## 原子操作
-### 数据结构atomic_t
-
-    atomic_t atm;
-    功能：定义一个原子变量。
-
-    注意：
-        使用前必须初始化
-        可以通过atomic_set或ATOMIC_INIT初始化
-        原子操作保证在多处理器系统上的同步
-    示例：
-        // 先定义，再初始化
-        atomic_t atm;
-        atomic_set(&atm, 1);
-
-        // 定义并初始化
-        atomic_t atm = ATOMIC_INIT(1);
-
-### ATOMIC_INIT
-
-    atomic_t atm = ATOMIC_INIT(1);
-    功能：定义并初始化原子变量的宏。
-
-    注意：
-        只能在变量定义时使用
-        不能用于已经定义的变量
-        参数必须是编译时常量
-    参数：
-        i - 原子变量的初始值
-
-### atomic_read
-
-    int atomic_read(const atomic_t *v);
-    功能：原子读取变量的值。
-
-    注意：
-        保证读取操作的原子性
-        不会被其他CPU的并发操作干扰
-    参数：
-        v - 原子变量的指针
-    返回值：
-        返回原子变量的当前值
-    示例：
-        int val = atomic_read(&atm);
-
-### atomic_set
-
-    void atomic_set(atomic_t *v, int i);
-    功能：原子设置变量的值。
-
-    注意：
-        保证设置操作的原子性
-        可以用于初始化或重置原子变量
-    参数：
-        v - 原子变量的指针
-        i - 要设置的值
-    示例：
-        atomic_set(&atm, 100);
-
-### atomic_inc
-
-    void atomic_inc(atomic_t *v);
-    功能：原子递增操作。
-
-    注意：
-        将原子变量的值加1
-        操作是原子的，不会被中断
-        常用于引用计数
-    参数：
-        v - 原子变量的指针
-    示例：
-        atomic_inc(&atm);  // atm = atm + 1
-
-### atomic_dec
-
-    void atomic_dec(atomic_t *v);
-    功能：原子递减操作。
-
-    注意：
-        将原子变量的值减1
-        操作是原子的，不会被中断
-        常用于引用计数
-    参数：
-        v - 原子变量的指针
-    示例：
-        atomic_dec(&atm);  // atm = atm - 1
-
-### atomic_dec_and_test
-
-    int atomic_dec_and_test(atomic_t *v);
-    功能：原子递减并测试是否为零。
-
-    注意：
-        将原子变量的值减1并测试结果
-        整个操作是原子的
-        常用于引用计数的释放检查
-    参数：
-        v - 原子变量的指针
-    返回值：
-        1 - 递减后的值为0
-        0 - 递减后的值不为0
-    示例：
-        if (atomic_dec_and_test(&atm)) {
-            // 引用计数变为0，执行清理操作
-            cleanup_resource();
-        }
-
-### atomic_add
-
-    void atomic_add(int i, atomic_t *v);
-    功能：原子加法操作。
-
-    注意：
-        将原子变量的值加上指定的数
-        操作是原子的，不会被中断
-    参数：
-        i - 要加的值
-        v - 原子变量的指针
-    示例：
-        atomic_add(10, &atm);  // atm = atm + 10
-
-### atomic_sub
-
-    void atomic_sub(int i, atomic_t *v);
-    功能：原子减法操作。
-
-    注意：
-        将原子变量的值减去指定的数
-        操作是原子的，不会被中断
-    参数：
-        i - 要减的值
-        v - 原子变量的指针
-    示例：
-        atomic_sub(10, &atm);  // atm = atm - 10
 
 # platform
 ## platform设备和驱动

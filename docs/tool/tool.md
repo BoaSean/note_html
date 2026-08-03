@@ -83,6 +83,19 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
 
         sudo docker run --rm --gpus all nvcr.io/nvidia/k8s/cuda-sample:nbody nbody -gpu -benchmark   性能测试
 
+usbipd
+
+    winget install --exact dorssel.usbipd-win 		管理员打开powershell
+
+    usbipd list
+
+    usbipd bind --busid 1-2						    设置成share
+
+    usbipd attach --wsl --busid 1-2					attach 单次生效
+
+    lsusb
+    ls /dev/tty*
+
 
 ### windows_install
 
@@ -110,16 +123,18 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
 
 ### ubuntu_cmd
 
-    unrar x yourfile.rar                           
-    rar a -r -v esp_esp32s3_szp.rar esp_esp32s3_szp/    
+    unrar x yourfile.rar                                        #解压                           
+    rar a -r -v esp_esp32s3_szp.rar esp_esp32s3_szp/            #压缩
     
-    cp -r esp_hello_world my_project"
-
+    cp -r esp_hello_world my_project                            #复制
+    
     tree tree -L 1                                              #查看一层文件内容   
     ls -a
     
-    du -sh workspece/
-    du -h --max-depth=1  查看一层文件磁盘占用
+    ls -lh note_md/asset_doc/freertos.excalidraw                #查看文件内存占用
+    du -sh workspece/                                           #查看文件夹内存占用
+    du -h --max-depth=1                                         #查看一层文件磁盘占用
+
 
 ### ubuntu_install
 
@@ -607,9 +622,36 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
 
 ![图片](./asset_vscode/01.png "Magic Gardens")
 
-    安装插件  
-    Chinese  
+安装插件
+
+    Chinese
+    Excalidraw
+
+    Remote - SSH
+    Remote - SSH: Editing Configuration Files
+    Remote - Tunnels
+    Remote Explorer
+
+    WSL
+    
+    Compare Folders
+
     One Dark Pro
+
+    Arm Assembly
+    C/C++
+    CMake
+
+    Cortex-Debug
+    debug-tracker-vscode
+    MemoryView
+    Peripheral Viewer
+    RTOS Views
+
+    Python
+    Python Debugger
+    Pylance
+    Python Environments
 
 ### vscode_ins_lin
 
