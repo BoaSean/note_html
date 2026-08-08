@@ -1,13 +1,24 @@
-# os
+# tools
 
 ## windows
 
-### windows_cmd
+    D:\Program\mingw64
+    D:\Program\cmake-3.27.1-windows-x86_64
+    D:\Program\env-windows-1.5.2
+    D:\Program\gcc-arm-none-eabi-10.3-2021.10
+    D:\Program\OpenOCD-20231002-0.12.0
+    D:\Program\python
 
 
-### wsl2
+    path
+        D:\Program\mingw64\bin
+        D:\Program\cmake-3.27.1-windows-x86_64\bin
+        D:\Program\gcc-arm-none-eabi-10.3-2021.10\bin
+        D:\Program\OpenOCD-20231002-0.12.0\bin
 
-Hyper-V
+## wsl2
+
+### Hyper-V
 
     bcdedit /set hypervisorlaunchtype auto          管理员身份
     bcdedit /set hypervisorlaunchtype off           
@@ -15,15 +26,7 @@ Hyper-V
     bcdedit /enum | findstr hypervisorlaunchtype    管理员身份
 
 
-
-powershell
-
-    $PSVersionTable
-    winget install Microsoft.PowerShell
-    pwsh --version
-
-
-wsl
+### wsl
 
     wsl --install --no-distribution                 管理员身份
 
@@ -53,7 +56,7 @@ wsl
         显卡    
             nvidia-smi
 
-NVIDIA Container Toolkit
+### NVIDIA Container Toolkit
 
 https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
 
@@ -83,7 +86,7 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
 
         sudo docker run --rm --gpus all nvcr.io/nvidia/k8s/cuda-sample:nbody nbody -gpu -benchmark   性能测试
 
-usbipd
+### usbipd
 
     winget install --exact dorssel.usbipd-win 		管理员打开powershell
 
@@ -97,31 +100,14 @@ usbipd
     ls /dev/tty*
 
 
-### windows_install
-
-    D:\Program\mingw64
-    D:\Program\cmake-3.27.1-windows-x86_64
-    D:\Program\env-windows-1.5.2
-    D:\Program\gcc-arm-none-eabi-10.3-2021.10
-    D:\Program\OpenOCD-20231002-0.12.0
-    D:\Program\python
-
-
-    path
-        D:\Program\mingw64\bin
-        D:\Program\cmake-3.27.1-windows-x86_64\bin
-        D:\Program\gcc-arm-none-eabi-10.3-2021.10\bin
-        D:\Program\OpenOCD-20231002-0.12.0\bin
 
 ## ubuntu
 
-### ubuntu_asset
+[VMware](https://github.com/201853910/VMwareWorkstation)
 
 [Ubuntu下载](https://cn.ubuntu.com/download)  
 [Ubuntu22LTS](https://www.releases.ubuntu.com/22.04/)
 
-
-### ubuntu_cmd
 
     unrar x yourfile.rar                                        #解压                           
     rar a -r -v esp_esp32s3_szp.rar esp_esp32s3_szp/            #压缩
@@ -135,8 +121,7 @@ usbipd
     du -sh workspece/                                           #查看文件夹内存占用
     du -h --max-depth=1                                         #查看一层文件磁盘占用
 
-
-### ubuntu_install
+    ------------------------------------------------------------------------------------
 
     sudo vim ~/.bashrc
     
@@ -587,15 +572,12 @@ usbipd
 
 ![图片](./asset_vim/20250310230220.png "Magic Gardens")    
 
-# tool_common
 
 ## vscode
 
-### vscode_asset
 
 [VScode官网](https://code.visualstudio.com/)
 
-### vscode_cmd
 
     Ctrl+/              单行注释或取消注释  
     shift +alt +a       多行注释
@@ -618,59 +600,56 @@ usbipd
     
     ctrl选中两文件       右击选中比较
 
-### vscode_ins_win
 
-![图片](./asset_vscode/01.png "Magic Gardens")
+    安装插件
+        
+        Chinese
+        Excalidraw
 
-安装插件
+        Remote - SSH
+        Remote - SSH: Editing Configuration Files
+        Remote - Tunnels
+        Remote Explorer
 
-    Chinese
-    Excalidraw
+        WSL
+        
+        Compare Folders
 
-    Remote - SSH
-    Remote - SSH: Editing Configuration Files
-    Remote - Tunnels
-    Remote Explorer
+        One Dark Pro
 
-    WSL
-    
-    Compare Folders
+        Arm Assembly
+        C/C++
+        CMake
 
-    One Dark Pro
+        Cortex-Debug
+        debug-tracker-vscode
+        MemoryView
+        Peripheral Viewer
+        RTOS Views
 
-    Arm Assembly
-    C/C++
-    CMake
+        Python
+        Python Debugger
+        Pylance
+        Python Environments
 
-    Cortex-Debug
-    debug-tracker-vscode
-    MemoryView
-    Peripheral Viewer
-    RTOS Views
+    vscode_linux_install
 
-    Python
-    Python Debugger
-    Pylance
-    Python Environments
+        #添加VSCode存储库：将Microsoft的存储库添加到您的系统中。这将帮助您保持VSCode最新并通过包管理器安装
+        sudo sh -c 'echo "deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+        #导入Microsoft GPG密钥以确保软件包的完整性
+        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+        sudo mv packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+        #安装VSCode
+        sudo apt-get update
+        sudo apt-get install code
+        
+        sudo apt remove --purge code    #卸载Visual Studio Code
+        sudo apt autoremove             #删除已安装的依赖库
+        sudo apt clean                  #清理不再需要的软件包
 
-### vscode_ins_lin
+        ---------------------------------------
 
-    #添加VSCode存储库：将Microsoft的存储库添加到您的系统中。这将帮助您保持VSCode最新并通过包管理器安装
-    sudo sh -c 'echo "deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-    #导入Microsoft GPG密钥以确保软件包的完整性
-    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    sudo mv packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-    #安装VSCode
-    sudo apt-get update
-    sudo apt-get install code
-    
-    sudo apt remove --purge code    #卸载Visual Studio Code
-    sudo apt autoremove             #删除已安装的依赖库
-    sudo apt clean                  #清理不再需要的软件包
-
-    ---------------------------------------
-
-    sudo dpkg -i code_1.117.0-1776814346_amd64.deb 
+        sudo dpkg -i code_1.117.0-1776814346_amd64.deb 
 
 
     powershell设置中文
@@ -718,17 +697,11 @@ usbipd
 
 ## git
 
-### git_asset
 
 [git官网](https://git-scm.com/docs/git)  
 [git手册](https://git-scm.com/docs)   
-[Git安装](https://www.runoob.com/git/git-install-setup.html)  
 
 ### git_cmd
-
-
-    sudo apt install git
-    git --version
 
 
     
@@ -977,9 +950,6 @@ usbipd
     git submodule status
 
     
-
-### github_sshkey
-
 gitHub Pages
 
     用户站（User Site）：仅限 1 个
@@ -999,23 +969,29 @@ gitHub Pages
             文件夹保持默认的 / (root)。
             点击 Save 按钮
 
-github 添加 git ssh 
+### github sshkey 
 
 ![图片](./asset_git/01.png "Magic Gardens")
 ![图片](./asset_git/02.png "Magic Gardens")
 ![图片](./asset_git/03.png "Magic Gardens")
 ![图片](./asset_git/04.png "Magic Gardens")
 
-### git_ins_win
+### git_install
 
-### git_ins_lin
+linux
 
-# c_cpp
+    sudo apt install git
+    git --version
 
-### c_cpp_asset
+windows
+
+[Git安装](https://www.runoob.com/git/git-install-setup.html)  
+
+
+
+## c_cpp
 
 ### c_cpp_cmd
-
     Remove-Item -Path .\* -Recurse -Force
     cmake -G "MinGW Makefiles" ..
     mingw32-make.exe
@@ -1033,7 +1009,7 @@ github 添加 git ssh
     sudo tar -xvf glibc-2.35.tar.xz
     [lanch cwd] ->  /usr/src/glibc/glibc-2.35   
 
-### gcc_cmd
+### gcc
 
 
     man gcc         #查看GCC支持的c版本  
@@ -1150,7 +1126,7 @@ github 添加 git ssh
             /usr/include
         End of search list.
 
-### gdb_cmd
+### gdb
     
     #回车                                        # 重复上条命令
     help                                        # 查看命令帮助                               |h
@@ -1208,9 +1184,9 @@ github 添加 git ssh
 
     set follow-fork-mode child                  # Makefile项目管理: 选择跟踪父子进程 (fork())
 
-### make_cmd
+### make
 
-### cmake_cmd
+### cmake
 
     简单模板
         C语言
@@ -1322,7 +1298,24 @@ github 添加 git ssh
             cmake ..		# 3.编译上级目录的CMakeLists.txt，生成Makefile和其他文件
             make			# 4.执行make命令，生成target
 
-### c_cpp_ins_win
+### c_cpp_install
+
+linux
+
+    sudo apt install gcc    #安装gcc
+    gcc -v                  #查看安装是否成功
+
+    sudo apt install g++    #安装gcc
+    g++ -v                  #查看安装是否成功
+
+    sudo apt-get install gdb   #安装gdb
+    gdb -v                     #查看是否安装成功 
+
+    sudo apt install cmake    #安装cmake
+    cmake --version           # 查看是否安装成功
+
+
+windows
 
 mingw安装
 
@@ -1344,28 +1337,10 @@ cmake安装
 
 ![图片](./asset_c_cpp/03.png "Magic Gardens")
 
-### c_cpp_ins_lin
-
-    sudo apt install gcc    #安装gcc
-    gcc -v                  #查看安装是否成功
-
-    sudo apt install g++    #安装gcc
-    g++ -v                  #查看安装是否成功
-
-    sudo apt-get install gdb   #安装gdb
-    gdb -v                     #查看是否安装成功 
-
-    sudo apt install cmake    #安装cmake
-    cmake --version           # 查看是否安装成功
 
 
-# python
+## python
 
-### python_asset
-
-    win
-        python --version
-        Python 3.10.10
 
 ### python_cmd
 
@@ -1408,7 +1383,18 @@ cmake安装
     Set-ExecutionPolicy Unrestricted            #允许所有脚本执行
 ```
 
-### python_ins_win
+### python_install
+
+version
+
+    windows
+        python --version
+        Python 3.10.10
+
+
+linux
+
+windows
 
 Python安装
 
@@ -1436,18 +1422,13 @@ vscode调试
         ]
     }
 
-### python_ins_lin
 
+## armgcc
 
-# armgcc
-
-### armgcc_asset
-
-    OpenOCD-20231002-0.12.0/openocd
-    stm32cubeprg_v2_10_0
 
 ### armgcc_cmd
-    
+
+
     sudo apt install gcc-arm-none-eabi
     sudo apt-get install gdb-multiarch
     sudo apt install gdb-arm-none-eabi
@@ -1601,17 +1582,17 @@ vscode调试
     ./program/stm32cubeprg/bin/STM32CubeProgrammer
     ./program/stm32cubemx/STM32CubeMX 
 
-### armgcc_ins_win
+### armgcc_install
 
-### armgcc_ins_lin
+version
+
+    OpenOCD-20231002-0.12.0/openocd
+    stm32cubeprg_v2_10_0
 
 
-# rtt
 
-### rtt_asset
+## rtt
 
-    windows env 1.5.2  /linux  env 1.5.x
-    sdk 4.1.0/sdk5.1.0
 
 ### rtt_cmd
 
@@ -1746,9 +1727,15 @@ vscode调试
 
         pkgs --update
 
-### rtt_ins_win
 
-### rtt_ins_lin
+### rtt_install
+
+version
+
+    windows env 1.5.2  /linux  env 1.5.x
+    sdk 4.1.0/sdk5.1.0
+
+linux
 
     https://github.com/RT-Thread/env
 
@@ -1771,11 +1758,11 @@ vscode调试
 
     2.0.0 >5.1.0
 
-# idf
+windows
 
-### idf_asset
+https://www.rt-thread.org/download.html
 
-    idf5.5.4
+## idf
 
 ### idf_cmd
 
@@ -1864,9 +1851,15 @@ vscode调试
     //烧录合并的bin文件
     python -m esptool --chip esp32s3 write_flash 0x0 full_image.bin
 
-### idf_ins_win
 
-### idf_ins_lin
+### idf_insstall
+
+version
+
+    idf5.4.1
+    idf5.5.4/idf5.5.5
+
+linux
 
     5.4.1
         sudo apt-get install git wget flex bison gperf python3 python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0

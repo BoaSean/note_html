@@ -69,20 +69,17 @@
 
 
 
-    修改环境变量
+    临时修改环境变量
+        export PATH=/home/orangepi/workspece/:$PAHT #临时环境变量到PAHT最前边
+                PATH=$PATH:.                        #临时追加当前目录到PAHT最后边
+    
+    追加环境变量到bash 
+        vim ~/.bashrc       
+        export PATH=/home/orangepi/workspece/:$PAHT
+        source .bashrc      
 
-    ##############临时修改          (仅对当前用户有效且仅当前有效关闭终端再开启无效)
-    PATH=$PATH:.                                #临时追加当前目录到环境变量1
-    export PATH=/home/orangepi/workspece/:$PAHT #临时追加当前目录到环境变量2
+    PAHT 中有/bin/      把需要查找的东西放在/bin/
 
-    #################永久修改#########################################
-    vim ~/.bashrc       #1.bash进程启动以后会自动执行脚本文件~/.bashrc 永久生效
-
-        #2.添加内容
-    PS1="\W\$"
-    PATH=$PATH:.
-
-    source .bashrc      #3.更新 使用此命令或重启终端
 
 ## 程序编译
 
