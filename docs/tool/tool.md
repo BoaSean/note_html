@@ -238,6 +238,8 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
         rar -version
         rar a -r esp_esp32s3_szp.rar esp_esp32s3_szp/               #压缩
 
+
+        sudo apt install unzip                                      #unzip
         unzip stm32cubemx-lin-v6-16-1.zip -d stm32cubemx
         
 
@@ -418,6 +420,7 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
 
         getent group docker             查看docker组
 
+        newgrp docker	                刷新组权限
 
         sudo docker images              查看镜像
 
@@ -839,8 +842,13 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
     git merge fenzhi1                                   #合并分支到master
 
     #################################子仓库#################################
-    
-    git submodule update --init --recursive
+    git clone git@github.com:BoaSean/某个项目.git       #clone
+    git submodule update --init --recursive             #更新子模块
+
+    git submodule foreach --recursive git reset --hard HEAD
+    git submodule foreach --recursive git clean -fd
+
+    git clone --recurse-submodules git@github.com:BoaSean/你的仓库名.git    #clone 时拉取子模块
 
     git submodule add https://github.com/armink/EasyFlash.git  EasyFlash
     cd .\EasyFlash\
@@ -1313,6 +1321,9 @@ linux
 
     sudo apt install cmake    #安装cmake
     cmake --version           # 查看是否安装成功
+
+    sudo apt install bear
+    bear --version
 
 
 windows
