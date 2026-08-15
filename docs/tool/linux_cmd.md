@@ -70,7 +70,7 @@
 
 
     临时修改环境变量
-        export PATH=/home/orangepi/workspece/:$PAHT #临时环境变量到PAHT最前边
+        export PATH=/home/orangepi/workspece/:$PATH #临时环境变量到PAHT最前边
                 PATH=$PATH:.                        #临时追加当前目录到PAHT最后边
     
     追加环境变量到bash 

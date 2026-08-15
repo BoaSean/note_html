@@ -240,6 +240,8 @@ tree:
       file: "c_linux.md#close"
     - title: "read"
       file: "c_linux.md#read"
+    - title: "write"
+      file: "c_linux.md#write"
     - title: "lseek"
       file: "c_linux.md#lseek"
     - title: "dup"

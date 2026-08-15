@@ -1021,6 +1021,7 @@
         返回值:
             错误 1 errno被设置
             成功 返回读取到的字节数 0代表到达了文件的末尾
+### write
     ssize t write(int fd, const void *buf, size t count)向指定的文件写入数据
         引用:#include <unistd.h>
         参数:
