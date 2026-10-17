@@ -426,6 +426,17 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
 
         sudo docker ps                  查看镜像实例
 
+        docker system df                查看容器占用
+        docker system df -v
+            Images space usage          镜像
+                docker rmi espressif/idf:v5.4.4 删除镜像
+            Containers space usage      镜像容器
+            Local Volumes space usage   数据卷
+                docker volume rm vscode         删除数据卷
+            Build cache usage           构建缓存
+                docker buildx du --verbose      查看构建缓存
+
+
         Dockerfile 
         镜像
         容器
@@ -572,6 +583,19 @@ https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install
         sudo systemctl enable frpc  #设置进程开机启动
         sudo systemctl start frpc   #启动进程
 
+    扩容
+
+        VMware：设置 → 硬盘 → 扩展（有快照先删快照）
+
+        linux 
+            lsblk
+
+            sudo apt install -y cloud-guest-utils
+
+            sudo growpart /dev/sda 3
+            sudo resize2fs /dev/sda3
+
+            lsblk
 
 ![图片](./asset_vim/20250310230220.png "Magic Gardens")    
 
